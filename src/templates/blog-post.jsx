@@ -10,13 +10,26 @@ const styles = {
     }
 }
 
-const BlogPost = ({ }) => (
+const BlogPost = ({ data: { contentfulBlogPost } }) => (
   <div style={styles.wrapper}>
-      <h1>My Title</h1>
+      <h1>{contentfulBlogPost.title}</h1>
       <hr width="100%"/>
-      <div dangerouslySetInnerHTML={{ __html: '<p>Hello</p>' }} />
+      <div dangerouslySetInnerHTML={{ __html: contentfulBlogPost.body.childMarkdownRemark.html }} />
   </div>
 );
+
+export const query = graphql`
+    query MyQuery($slug: String) {
+        contentfulBlogPost(slug: {eq: $slug}) {
+            title
+            body {
+            childMarkdownRemark {
+                html
+            }
+            }
+        }
+        }
+`;
 
 
 export default BlogPost
